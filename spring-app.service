@@ -1,0 +1,29 @@
+[Unit]
+Description=Spring Boot Application (app.jar) on port 8082
+Documentation=https://docs.spring.io/spring-boot/docs/current/reference/html/
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=spring-runner
+Group=spring-runner
+
+ExecStart=/usr/bin/java -jar /opt/spring-app/app.jar
+WorkingDirectory=/opt/spring-app
+
+Restart=on-failure
+RestartSec=10
+
+StandardOutput=journal
+StandardError=journal
+
+SuccessExitStatus=143
+
+Environment=SERVER_PORT=8082
+Environment=SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/springboot_db
+Environment=SPRING_DATASOURCE_USERNAME=spring-admin
+Environment=SPRING_DATASOURCE_PASSWORD=SpringSecure@123
+
+[Install]
+WantedBy=multi-user.target
